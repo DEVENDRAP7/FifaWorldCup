@@ -51,7 +51,13 @@
   <p>When you vote on a match outcome, your choice increments <strong>anonymous, aggregate counters</strong> stored in our cloud database (<strong>Cloud Firestore</strong>, a Google service). Votes are stored only as running totals per match (home / draw / away). These totals are <strong>not linked to your account, identity, email, or device</strong>. We cannot tell who voted for what — only the combined percentages shown in the App.</p>
 
   <h3>1.4 Information Collected Automatically</h3>
-  <p>The App itself includes <strong>no analytics, advertising, or crash-reporting SDKs</strong>, and does not access location, contacts, camera, microphone, photos, or other device sensors. To provide sign-in and the voting database, the underlying Firebase services may process limited technical data such as IP address, device/app identifiers, and timestamps for security and abuse-prevention purposes, under Google's privacy policy.</p>
+  <p>To understand how the App is used and to keep it stable, we use <strong>Google Firebase Analytics</strong> and <strong>Firebase Crashlytics</strong>. These collect:</p>
+  <ul>
+    <li><strong>Usage &amp; interaction data</strong> — screens viewed and in-app events (e.g. sign-in, casting a vote), and an app-instance identifier.</li>
+    <li><strong>Crash &amp; diagnostic data</strong> — crash reports, stack traces, device model, operating-system version, and app version, used to diagnose and fix problems.</li>
+    <li><strong>Approximate technical data</strong> — such as IP address (used by Firebase to derive a coarse, country-level region) and timestamps.</li>
+  </ul>
+  <p>The App uses <strong>no advertising SDKs</strong> and does not access location, contacts, camera, microphone, or photos.</p>
 
   <h3>1.5 Information from Third-Party Data Sources</h3>
   <p>The App fetches match fixtures, live scores, group standings, and team flags from the public <strong>FIFA data API</strong> (<code>api.fifa.com</code>). These requests originate from your device and contain no personal identifiers beyond standard HTTP metadata handled by that provider under its own privacy policy.</p>
@@ -68,12 +74,12 @@
   <h2>3. Where Your Data Is Stored</h2>
   <ul>
     <li><strong>On your device</strong> (using on-device storage, Hive): favorite team, language preference, your voting record, and session state.</li>
-    <li><strong>In the cloud</strong> (Google Firebase): your account credentials and profile (Firebase Authentication), and anonymous aggregate vote totals (Cloud Firestore).</li>
+    <li><strong>In the cloud</strong> (Google Firebase): your account credentials and profile (Firebase Authentication), anonymous aggregate vote totals (Cloud Firestore), and usage &amp; crash data (Firebase Analytics and Crashlytics).</li>
   </ul>
   <p>Firebase data is processed on Google's infrastructure. See Google's Privacy Policy at <a href="https://policies.google.com/privacy">policies.google.com/privacy</a> and the Firebase data terms at <a href="https://firebase.google.com/support/privacy">firebase.google.com/support/privacy</a>.</p>
 
   <h2>4. Data Sharing</h2>
-  <p>We do <strong>not</strong> sell, rent, or trade your personal data. Data is shared only with <strong>Google Firebase</strong>, which acts as our service provider to deliver authentication and the voting database. The App contains <strong>no advertising, analytics, or tracking SDKs</strong>.</p>
+  <p>We do <strong>not</strong> sell, rent, or trade your personal data. Data is shared only with <strong>Google Firebase</strong>, which acts as our service provider to deliver authentication, the voting database, usage analytics, and crash reporting. The App contains <strong>no advertising or third-party tracking SDKs</strong>.</p>
 
   <h2>5. Your Choices &amp; Rights</h2>
   <ul>
@@ -100,7 +106,7 @@
 
   <h2>10. Third-Party Services</h2>
   <ul>
-    <li>Google Firebase (Authentication, Cloud Firestore) — <a href="https://firebase.google.com/support/privacy">firebase.google.com/support/privacy</a></li>
+    <li>Google Firebase (Authentication, Cloud Firestore, Analytics, Crashlytics) — <a href="https://firebase.google.com/support/privacy">firebase.google.com/support/privacy</a></li>
     <li>Google Sign-In — <a href="https://policies.google.com/privacy">policies.google.com/privacy</a></li>
     <li>FIFA data API — <a href="https://www.fifa.com/legal/privacy-policy">www.fifa.com/legal/privacy-policy</a></li>
   </ul>
