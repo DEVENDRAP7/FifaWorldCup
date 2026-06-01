@@ -107,7 +107,7 @@ class _GroupCard extends StatelessWidget {
     final padded = [...teams, ...List.filled(4 - teams.length.clamp(0, 4), ('TBD', ''))].take(4).toList();
     return Container(
       width: 150,
-      decoration: BoxDecoration(color: AppTheme.card, borderRadius: BorderRadius.circular(8), border: Border.all(color: const Color(0xFFD4AF37).withValues(alpha: .55))),
+      decoration: BoxDecoration(color: AppTheme.card, borderRadius: BorderRadius.circular(8), border: Border.all(color: const Color(0x4DFFFFFF))),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Container(
           padding: const EdgeInsets.symmetric(vertical: 5),
@@ -180,7 +180,7 @@ class _BracketTree extends StatelessWidget {
         const SizedBox(height: 24),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-          decoration: BoxDecoration(color: AppTheme.surface, borderRadius: BorderRadius.circular(6), border: Border.all(color: const Color(0xFFD4AF37).withValues(alpha: .55))),
+          decoration: BoxDecoration(color: AppTheme.surface, borderRadius: BorderRadius.circular(6), border: Border.all(color: const Color(0x4DFFFFFF))),
           child: const Text('3rd PLACE', style: TextStyle(color: AppTheme.muted, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1)),
         ),
         const SizedBox(height: 8),
@@ -236,7 +236,7 @@ class _SlotCard extends StatelessWidget {
       width: 140,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-        decoration: BoxDecoration(color: AppTheme.card, borderRadius: BorderRadius.circular(8), border: Border.all(color: const Color(0xFFD4AF37).withValues(alpha: .55))),
+        decoration: BoxDecoration(color: AppTheme.card, borderRadius: BorderRadius.circular(8), border: Border.all(color: const Color(0x4DFFFFFF))),
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Text(slot.$1, style: const TextStyle(color: AppTheme.primary, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: .5)),
           const Text('vs', style: TextStyle(color: AppTheme.muted, fontSize: 9, fontStyle: FontStyle.italic)),
@@ -260,7 +260,7 @@ class _RealOrTbdCard extends StatelessWidget {
         width: w,
         child: Container(
           padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(color: AppTheme.card, borderRadius: BorderRadius.circular(8), border: Border.all(color: const Color(0xFFD4AF37).withValues(alpha: big ? .85 : .55), width: big ? 2 : 1)),
+          decoration: BoxDecoration(color: AppTheme.card, borderRadius: BorderRadius.circular(8), border: Border.all(color: const Color(0x66FFFFFF), width: big ? 2 : 1)),
           child: const Column(children: [
             Text('TBD', style: TextStyle(color: AppTheme.muted, fontStyle: FontStyle.italic, fontSize: 11)),
             SizedBox(height: 4),

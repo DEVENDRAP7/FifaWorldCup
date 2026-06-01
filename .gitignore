@@ -45,9 +45,17 @@ app.*.map.json
 /android/app/release
 
 # Extra
-ios/Pods/
 android/.gradle/
 android/app/build/
 android/build/
 *.lock
 flutter_export_environment.sh
+
+# Secrets / signing — never commit to a public repo
+key.properties
+**/*.jks
+**/*.keystore
+android/app/google-services.json
+
+# OS junk
+**/.DS_Store

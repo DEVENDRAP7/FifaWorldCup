@@ -7,6 +7,7 @@ import '../theme/app_theme.dart';
 import '../widgets/match_card.dart';
 import '../widgets/skeleton.dart';
 import '../widgets/hero_header.dart';
+import '../services/ad_service.dart';
 import 'match_detail_screen.dart';
 
 class MatchesScreen extends ConsumerWidget {
@@ -115,7 +116,7 @@ class _DayLabel extends _Item {
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.fromLTRB(AppTheme.s16, AppTheme.s8, AppTheme.s16, AppTheme.s8),
-        child: Text(day.toUpperCase(), style: AppTheme.overline.copyWith(color: Colors.black)),
+        child: Text(day.toUpperCase(), style: AppTheme.overline.copyWith(color: Colors.white)),
       );
 }
 
@@ -125,7 +126,10 @@ class _MatchItem extends _Item {
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.fromLTRB(AppTheme.s12, 0, AppTheme.s12, AppTheme.s12),
-        child: MatchCard(m: m, onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => MatchDetailScreen(m: m)))),
+        child: MatchCard(m: m, onTap: () {
+          AdService.instance.maybeShowInterstitial();
+          Navigator.push(context, MaterialPageRoute(builder: (_) => MatchDetailScreen(m: m)));
+        }),
       );
 }
 

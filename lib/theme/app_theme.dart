@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 /// ════════════════════════════════════════════════════════════
-///  PALETTE 9 — STADIUM OFFICIAL  (Deep Blue · Trophy Gold · Pitch Red)
+///  PALETTE 10 — COSMIC GLASS  (Deep cosmic bg · Translucent cards)
 /// ════════════════════════════════════════════════════════════
 class AppTheme {
-  static const bg = Color(0xFF0A2F75);              // Deep Stadium Blue
-  static const surface = Color(0xFF0E3A8F);          // Lifted stadium blue
-  static const card = Color(0xFF13408C);             // Card surface
-  static const border = Color(0xFF1E4FA8);
-  static const text = Color(0xFFFFFFFF);             // Crisp Stadium White
-  static const textSecondary = Color(0xFFCBD8F0);
-  static const muted = Color(0xFF8FA3CC);
-  static const mutedSoft = Color(0xFF3D5FA0);
+  static const bg = Color(0xFF0A0E1A);              // (overridden by sunrise gradient in home)
+  static const surface = Color(0x33FFFFFF);          // 20% white (glass)
+  static const card = Color(0x33FFFFFF);             // 20% white (glass card)
+  static const border = Color(0x4DFFFFFF);           // 30% white border
+  static const text = Color(0xFFFFFFFF);
+  static const textSecondary = Color(0xFFF2F2F2);
+  static const muted = Color(0xFFE5E5E5);
+  static const mutedSoft = Color(0x4DFFFFFF);
 
   static const primary = Color(0xFFC8102E);          // Pitch Red
   static const gold = Color(0xFFD4AF37);             // Trophy Gold

@@ -11,7 +11,7 @@ class GroupTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(color: AppTheme.card, borderRadius: BorderRadius.circular(13), border: Border.all(color: const Color(0xFFD4AF37).withValues(alpha: .55))),
+      decoration: BoxDecoration(color: AppTheme.card, borderRadius: BorderRadius.circular(13), border: Border.all(color: const Color(0x4DFFFFFF))),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(group.name.toUpperCase(), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, letterSpacing: 1.2, fontSize: 13)),
         const SizedBox(height: 8),

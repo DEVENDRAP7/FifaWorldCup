@@ -1,0 +1,14 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Public match-win poll: anyone may read totals and cast/undo a vote.
+    match /votes/{matchId} {
+      allow read: if true;
+      allow write: if true;
+    }
+    // Everything else locked.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

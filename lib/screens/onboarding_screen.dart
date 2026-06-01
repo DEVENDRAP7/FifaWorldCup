@@ -4,6 +4,7 @@ import '../providers/providers.dart';
 import '../providers/auth_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/flag.dart';
+import '../widgets/auth_panel.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -15,102 +16,142 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   int _step = 0;
   String? _selectedName;
   String? _selectedCode;
-  final _nameCtrl = TextEditingController();
+  final _pageCtrl = PageController();
+  int _page = 0;
+
+  static const _slides = [
+    ('assets/onboarding.png', 'Welcome to World Cup 2026', 'Every match of the 2026 tournament — live in your pocket.'),
+    ('assets/onboarding2.png', 'Live Scores & Standings', 'Real-time scores and group tables, updated as games happen.'),
+    ('assets/onboarding3.png', 'Vote & Back Your Team', 'Predict who wins, see how the world leans, and follow your nation.'),
+  ];
 
   @override
   void dispose() {
-    _nameCtrl.dispose();
+    _pageCtrl.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final body = _step == 0
-        ? _welcome()
-        : _step == 1
-        ? _authStep()
-        : _teamPicker();
     if (_step == 0) {
-      return Scaffold(body: _welcome());
+      return Scaffold(body: _carousel());
     }
+    // Auth step scrolls (keyboard); team picker fills available space.
+    final body = _step == 1
+        ? SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+            child: _authStep(),
+          )
+        : const Padding(padding: EdgeInsets.all(20), child: SizedBox.shrink());
     return Scaffold(
       body: SafeArea(
-        child: Padding(padding: const EdgeInsets.all(20), child: body),
+        child: _step == 1 ? body : Padding(padding: const EdgeInsets.all(20), child: _teamPicker()),
       ),
     );
   }
 
-  Widget _welcome() {
+  void _next() {
+    if (_page < _slides.length - 1) {
+      _pageCtrl.nextPage(duration: const Duration(milliseconds: 320), curve: Curves.easeOut);
+    } else {
+      setState(() => _step = 1);
+    }
+  }
+
+  Widget _carousel() {
+    final isLast = _page == _slides.length - 1;
     return Stack(
       fit: StackFit.expand,
       children: [
-        // Background image
-        Image.asset(
-          'assets/onboarding.png',
-          fit: BoxFit.cover,
-          alignment: Alignment.center,
+        PageView.builder(
+          controller: _pageCtrl,
+          itemCount: _slides.length,
+          onPageChanged: (i) => setState(() => _page = i),
+          itemBuilder: (_, i) {
+            final (img, title, sub) = _slides[i];
+            return Stack(fit: StackFit.expand, children: [
+              Image.asset(img, fit: BoxFit.cover, alignment: Alignment.center),
+              Positioned.fill(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.transparent,
+                        Colors.transparent,
+                        Colors.black.withValues(alpha: 0.6),
+                        Colors.black.withValues(alpha: 0.9),
+                      ],
+                      stops: const [0.0, 0.5, 0.78, 1.0],
+                    ),
+                  ),
+                ),
+              ),
+              SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(28, 0, 28, 170),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(title, style: AppTheme.display.copyWith(color: Colors.white, fontSize: 26)),
+                      const SizedBox(height: 10),
+                      Text(sub, style: AppTheme.body.copyWith(color: Colors.white70, fontSize: 15, height: 1.4)),
+                    ],
+                  ),
+                ),
+              ),
+            ]);
+          },
         ),
-        // Bottom dark gradient overlay for text + button readability
-        Positioned.fill(
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.transparent,
-                  Colors.transparent,
-                  Colors.black.withValues(alpha: 0.55),
-                  Colors.black.withValues(alpha: 0.85),
-                ],
-                stops: const [0.0, 0.55, 0.8, 1.0],
+        // Skip
+        SafeArea(
+          child: Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 12, top: 4),
+              child: TextButton(
+                onPressed: () => setState(() => _step = 1),
+                child: const Text('Skip', style: TextStyle(color: Colors.white70, fontWeight: FontWeight.w700)),
               ),
             ),
           ),
         ),
-        // Foreground content
+        // Dots + button
         SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(28, 0, 28, 36),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Spacer(),
-                const SizedBox(height: 30),
-                Center(
-                  child: GestureDetector(
-                    onTap: () => setState(() => _step = 1),
-                    child: Container(
-                      width: 70,
-                      height: 70,
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [Color(0xFF2ECC71), Color(0xFF1E9E5A)],
-                        ),
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.3),
-                          width: 2,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(
-                              0xFF2ECC71,
-                            ).withValues(alpha: 0.5),
-                            blurRadius: 24,
-                            spreadRadius: 2,
-                          ),
-                        ],
-                      ),
-                      child: const Icon(
-                        Icons.chevron_right,
-                        color: Colors.white,
-                        size: 36,
-                      ),
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(28, 0, 28, 36),
+              child: Column(mainAxisSize: MainAxisSize.min, children: [
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: List.generate(_slides.length, (i) {
+                  final active = i == _page;
+                  return AnimatedContainer(
+                    duration: const Duration(milliseconds: 250),
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    width: active ? 22 : 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: active ? AppTheme.gold : Colors.white38,
+                      borderRadius: BorderRadius.circular(4),
                     ),
+                  );
+                })),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton(
+                    style: FilledButton.styleFrom(
+                      backgroundColor: AppTheme.gold,
+                      foregroundColor: const Color(0xFF1F1F22),
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                    ),
+                    onPressed: _next,
+                    child: Text(isLast ? 'Get Started' : 'Next', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w900)),
                   ),
                 ),
-              ],
+              ]),
             ),
           ),
         ),
@@ -119,65 +160,25 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   }
 
   Widget _authStep() => Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      IconButton(
-        alignment: Alignment.centerLeft,
-        onPressed: () => setState(() => _step = 0),
-        icon: const Icon(Icons.arrow_back),
-      ),
-      const SizedBox(height: 8),
-      const Text(
-        'Sign in to play Contest',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900),
-      ),
-      const SizedBox(height: 8),
-      const Text(
-        'Earn caps, support your team, win more. Guest mode also available for testing.',
-        style: TextStyle(color: AppTheme.muted),
-      ),
-      const SizedBox(height: 24),
-      TextField(
-        controller: _nameCtrl,
-        decoration: const InputDecoration(
-          labelText: 'Your name',
-          border: OutlineInputBorder(),
-          prefixIcon: Icon(Icons.person_outline),
-        ),
-      ),
-      const SizedBox(height: 12),
-      FilledButton(
-        style: FilledButton.styleFrom(
-          backgroundColor: AppTheme.primary,
-          padding: const EdgeInsets.symmetric(vertical: 14),
-        ),
-        onPressed: () async {
-          final n = _nameCtrl.text.trim();
-          if (n.isEmpty) return;
-          await ref.read(authProvider.notifier).signIn(n);
-          setState(() => _step = 2);
-        },
-        child: const Text(
-          'Sign In',
-          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
-        ),
-      ),
-      const SizedBox(height: 10),
-      OutlinedButton(
-        style: OutlinedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(vertical: 14),
-        ),
-        onPressed: () async {
-          await ref.read(authProvider.notifier).signInAsGuest();
-          setState(() => _step = 2);
-        },
-        child: const Text(
-          'Continue as Guest (Test)',
-          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-        ),
-      ),
-    ],
-  );
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: IconButton(
+              onPressed: () => setState(() => _step = 0),
+              icon: const Icon(Icons.arrow_back),
+            ),
+          ),
+          const SizedBox(height: 4),
+          AuthPanel(
+            onAuthenticated: () => setState(() => _step = 2),
+            onGuest: () async {
+              await ref.read(authProvider.notifier).signInAsGuest();
+              if (mounted) setState(() => _step = 2);
+            },
+          ),
+        ],
+      );
 
   Widget _teamPicker() {
     final matches = ref.watch(matchesProvider);

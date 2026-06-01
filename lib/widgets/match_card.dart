@@ -30,7 +30,7 @@ class MatchCard extends StatelessWidget {
             color: AppTheme.card,
             borderRadius: BorderRadius.circular(AppTheme.rLg),
             border: Border.all(
-              color: isLive ? const Color(0xFFFFD700) : const Color(0xFFD4AF37).withValues(alpha: .55),
+              color: isLive ? const Color(0xFFFFD700) : const Color(0x4DFFFFFF),
               width: isLive ? 1.5 : 1,
             ),
             boxShadow: isLive
@@ -50,14 +50,6 @@ class MatchCard extends StatelessWidget {
                   border: const Border(bottom: BorderSide(color: AppTheme.border)),
                 ),
                 child: Row(children: [
-                  Container(
-                    width: 4, height: 14,
-                    decoration: BoxDecoration(
-                      color: isLive ? AppTheme.live : (isFT ? AppTheme.muted : AppTheme.primary),
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
                   Flexible(child: Text(stage.toUpperCase(), style: AppTheme.overline.copyWith(color: AppTheme.textSecondary), overflow: TextOverflow.ellipsis)),
                   const Spacer(),
                   if (isLive) const LiveBadge(compact: true) else _statusChip(isFT, isNS, m),
