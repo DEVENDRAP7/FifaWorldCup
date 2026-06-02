@@ -21,23 +21,20 @@ class MatchDetailScreen extends ConsumerWidget {
     final aW = isFT && (m.awayScore ?? 0) > (m.homeScore ?? 0);
     final detail = ref.watch(matchDetailProvider(m));
 
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter, end: Alignment.bottomCenter,
-          colors: [Color(0xFF1B1330), Color(0xFF2A1A36), Color(0xFF3A1F35), Color(0xFF5A2530)],
-          stops: [0.0, 0.4, 0.7, 1.0],
-        ),
-      ),
+    return PitchStripes(
       child: Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppTheme.deep,
         elevation: 0,
         scrolledUnderElevation: 0,
-        surfaceTintColor: Colors.transparent,
+        surfaceTintColor: AppTheme.deep,
         centerTitle: true,
-        title: Text(_title),
+        title: Text(_title.toUpperCase(), style: AppTheme.title.copyWith(letterSpacing: 2)),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(2),
+          child: Container(height: 2, color: AppTheme.accent),
+        ),
       ),
       // Banner pinned at the bottom, clear of the system nav bar on every device.
       bottomNavigationBar: const SafeArea(top: false, child: BannerAdWidget()),

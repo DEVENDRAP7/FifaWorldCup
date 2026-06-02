@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../theme/app_theme.dart';
 import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -47,22 +48,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Color(0xFF1B1330),
-            Color(0xFF3A1F35),
-            Color(0xFF7A2E2A),
-            Color(0xFFC8542B),
-            Color(0xFFE89647),
-            Color(0xFFEBB46D),
-          ],
-          stops: [0.0, 0.22, 0.45, 0.68, 0.85, 1.0],
-        ),
-      ),
+    return PitchStripes(
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Center(

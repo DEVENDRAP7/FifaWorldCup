@@ -2,72 +2,84 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 /// ════════════════════════════════════════════════════════════
-///  PALETTE 10 — COSMIC GLASS  (Deep cosmic bg · Translucent cards)
+///  PITCH — football stadium look. Grass-green field, white pitch
+///  lines, stadium-board yellow, scoreboard type (Teko + Saira).
 /// ════════════════════════════════════════════════════════════
 class AppTheme {
-  static const bg = Color(0xFF0A0E1A);              // (overridden by sunrise gradient in home)
-  static const surface = Color(0x33FFFFFF);          // 20% white (glass)
-  static const card = Color(0x33FFFFFF);             // 20% white (glass card)
-  static const border = Color(0x4DFFFFFF);           // 30% white border
+  // Field surfaces
+  static const bg = Color(0xFF0B5E34);          // grass green
+  static const bgStripe = Color(0xFF0A5530);    // mown stripe (darker)
+  static const deep = Color(0xFF063C20);        // dark panel / header bars
+  static const card = Color(0xFF0C4A29);        // scoreboard panel
+  static const paper = Color(0xFF0E5331);       // lighter panel
+  static const surface = Color(0xFF0F5C36);     // chip fill
+  static const border = Color(0x40FFFFFF);      // pitch line (white @ 25%)
+  static const line = Color(0x59FFFFFF);        // brighter line
+
+  // Text
   static const text = Color(0xFFFFFFFF);
-  static const textSecondary = Color(0xFFF2F2F2);
-  static const muted = Color(0xFFE5E5E5);
-  static const mutedSoft = Color(0x4DFFFFFF);
+  static const textSecondary = Color(0xFFE6F4EC);
+  static const muted = Color(0xFFAFCDBC);
+  static const mutedSoft = Color(0x1FFFFFFF);
+  static const ink = Color(0xFFFFFFFF);
 
-  static const primary = Color(0xFFC8102E);          // Pitch Red
-  static const inputAccent = Color(0xFFFF3B4E);      // Bright red — focused field accent
-  static const gold = Color(0xFFD4AF37);             // Trophy Gold
-  static const goldSoft = Color(0xFFFFD700);         // Sunray Yellow
+  // Accents — stadium board yellow
+  static const accent = Color(0xFFF4C430);
+  static const gold = Color(0xFFF4C430);
+  static const goldSoft = Color(0xFFFFDA63);
+  static const primary = Color(0xFFF4C430);
+  static const inputAccent = Color(0xFFF4C430);
 
-  static const usaBlue = Color(0xFF0A2F75);
-  static const usaRed = Color(0xFFC8102E);
-  static const canadaRed = Color(0xFFC8102E);
-  static const mexicoGreen = Color(0xFF00A877);      // Championship Teal/Emerald
-  static const mexicoRed = Color(0xFFC8102E);
+  static const live = Color(0xFFFF4136);        // live red
+  static const red = Color(0xFFFF4136);
+  static const win = Color(0xFF7DE48A);         // bright pitch green-white
 
-  static const live = Color(0xFFC8102E);
-  static const win = Color(0xFF00A877);
-  static const accent = Color(0xFFD4AF37);           // Gold as secondary accent
+  static const usaBlue = Color(0xFFF4C430);
+  static const usaRed = Color(0xFFFF4136);
+  static const canadaRed = Color(0xFFFF4136);
+  static const mexicoGreen = Color(0xFF7DE48A);
+  static const mexicoRed = Color(0xFFFF4136);
 
-  // ─── Spacing (4pt) ────────────────────────────────────────
+  // ─── Spacing ──────────────────────────────────────────────
   static const s2 = 2.0, s4 = 4.0, s8 = 8.0, s12 = 12.0, s16 = 16.0, s20 = 20.0, s24 = 24.0, s32 = 32.0, s48 = 48.0;
-  static const rSm = 8.0, rMd = 12.0, rLg = 16.0, rPill = 999.0;
+  static const rSm = 6.0, rMd = 10.0, rLg = 14.0, rPill = 999.0;
 
   static const shadowSm = [
-    BoxShadow(color: Color(0x40000000), blurRadius: 6, offset: Offset(0, 1)),
-    BoxShadow(color: Color(0x20000000), blurRadius: 2, offset: Offset(0, 1)),
+    BoxShadow(color: Color(0x33000000), blurRadius: 8, offset: Offset(0, 2)),
   ];
   static const shadowMd = [
-    BoxShadow(color: Color(0x55000000), blurRadius: 16, offset: Offset(0, 4)),
-    BoxShadow(color: Color(0x30000000), blurRadius: 6, offset: Offset(0, 2)),
+    BoxShadow(color: Color(0x4D000000), blurRadius: 18, offset: Offset(0, 6)),
   ];
 
-  static const triGradient = LinearGradient(
-    colors: [usaBlue, gold, primary],     // Stadium Blue → Gold → Pitch Red
-    stops: [0.0, 0.5, 1.0],
-  );
-  static const stageGradient = LinearGradient(
-    colors: [gold, goldSoft],
-  );
+  static const triGradient = LinearGradient(colors: [accent, goldSoft]);
+  static const stageGradient = LinearGradient(colors: [accent, goldSoft]);
   static const royalGradient = LinearGradient(
     begin: Alignment.topLeft, end: Alignment.bottomRight,
-    colors: [Color(0xFF0B1A3A), Color(0xFF1E40AF), Color(0xFF0B1A3A)],
+    colors: [deep, Color(0xFF0B5E34), deep],
   );
 
   // ─── Typography ───────────────────────────────────────────
-  static TextStyle _f(double size, FontWeight w, {Color c = text, double l = -0.2, double h = 1.25}) =>
+  // Teko — tall scoreboard numerals / big titles
+  static TextStyle _score(double size, FontWeight w, {Color c = text, double l = 0.5, double h = 0.95}) =>
+      GoogleFonts.teko(fontSize: size, fontWeight: w, color: c, letterSpacing: l, height: h);
+  // Saira — sporty condensed headlines / labels
+  static TextStyle _head(double size, FontWeight w, {Color c = text, double l = 0.4, double h = 1.1}) =>
+      GoogleFonts.saira(fontSize: size, fontWeight: w, color: c, letterSpacing: l, height: h);
+  // Inter — body / meta
+  static TextStyle _body(double size, FontWeight w, {Color c = text, double l = 0, double h = 1.3}) =>
       GoogleFonts.inter(fontSize: size, fontWeight: w, color: c, letterSpacing: l, height: h);
 
-  static TextStyle get displayLg => _f(34, FontWeight.w900, l: -0.8);
-  static TextStyle get display   => _f(28, FontWeight.w900, l: -0.6);
-  static TextStyle get headline  => _f(22, FontWeight.w800, l: -0.4);
-  static TextStyle get title     => _f(17, FontWeight.w700, l: -0.2);
-  static TextStyle get body      => _f(14, FontWeight.w500, l: 0);
-  static TextStyle get bodyBold  => _f(14, FontWeight.w700, l: 0);
-  static TextStyle get caption   => _f(12, FontWeight.w500, c: muted, l: 0);
-  static TextStyle get captionBold => _f(12, FontWeight.w700, c: textSecondary, l: 0.2);
-  static TextStyle get overline  => _f(10, FontWeight.w800, c: muted, l: 1.4, h: 1.0);
-  static TextStyle get numeric   => GoogleFonts.spaceGrotesk(fontSize: 28, fontWeight: FontWeight.w800, color: text, letterSpacing: -1, height: 1);
+  static TextStyle get displayLg => _score(52, FontWeight.w700);
+  static TextStyle get display   => _score(40, FontWeight.w700);
+  static TextStyle get headline  => _head(22, FontWeight.w700, l: 0.3);
+  static TextStyle get title     => _head(17, FontWeight.w600, l: 0.3);
+  static TextStyle get teamName  => _head(18, FontWeight.w600, l: 0.4);
+  static TextStyle get body      => _body(14, FontWeight.w500);
+  static TextStyle get bodyBold  => _body(14, FontWeight.w700);
+  static TextStyle get caption   => _body(12, FontWeight.w500, c: muted);
+  static TextStyle get captionBold => _body(12, FontWeight.w700, c: textSecondary);
+  static TextStyle get overline  => _head(11, FontWeight.w700, c: textSecondary, l: 1.4, h: 1.0);
+  static TextStyle get numeric   => GoogleFonts.teko(fontSize: 38, fontWeight: FontWeight.w600, color: text, letterSpacing: 0, height: 0.9);
 
   static ThemeData light() {
     final base = ThemeData(
@@ -76,7 +88,7 @@ class AppTheme {
       cardColor: card,
       useMaterial3: true,
       colorScheme: const ColorScheme.dark(
-        primary: primary, secondary: accent, surface: card, error: live, onSurface: text,
+        primary: accent, secondary: win, surface: card, error: red, onSurface: text,
       ),
       dividerColor: border,
       splashFactory: InkSparkle.splashFactory,
@@ -84,27 +96,27 @@ class AppTheme {
     return base.copyWith(
       textTheme: GoogleFonts.interTextTheme(base.textTheme).apply(bodyColor: text, displayColor: text),
       appBarTheme: AppBarTheme(
-        backgroundColor: card,
+        backgroundColor: deep,
         elevation: 0,
-        scrolledUnderElevation: 0.5,
-        surfaceTintColor: card,
-        centerTitle: false,
-        titleTextStyle: _f(17, FontWeight.w800, l: -0.3),
+        scrolledUnderElevation: 0,
+        surfaceTintColor: deep,
+        centerTitle: true,
+        titleTextStyle: _head(20, FontWeight.w700, l: 0.6),
         iconTheme: const IconThemeData(color: text),
       ),
       bottomSheetTheme: const BottomSheetThemeData(backgroundColor: card, surfaceTintColor: card),
       navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: card,
-        indicatorColor: gold.withValues(alpha: .25),
-        labelTextStyle: WidgetStateProperty.resolveWith((s) => _f(11, s.contains(WidgetState.selected) ? FontWeight.w800 : FontWeight.w600, c: s.contains(WidgetState.selected) ? text : muted, l: 0)),
+        backgroundColor: deep,
+        indicatorColor: accent.withValues(alpha: .25),
+        labelTextStyle: WidgetStateProperty.resolveWith((s) => _head(11, s.contains(WidgetState.selected) ? FontWeight.w700 : FontWeight.w600, c: s.contains(WidgetState.selected) ? accent : muted, l: 0.5)),
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
-          backgroundColor: primary,
-          foregroundColor: Colors.white,
+          backgroundColor: accent,
+          foregroundColor: deep,
           padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(rMd)),
-          textStyle: _f(14, FontWeight.w800, c: Colors.white, l: 0),
+          textStyle: _head(14, FontWeight.w700, c: deep, l: 0.5),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -113,25 +125,47 @@ class AppTheme {
           side: const BorderSide(color: border),
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(rMd)),
-          textStyle: _f(13, FontWeight.w700, l: 0),
+          textStyle: _head(13, FontWeight.w700, l: 0.3),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
-        filled: true, fillColor: surface,
+        filled: true, fillColor: deep,
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        // Bright red accent so the focus state reads clearly on the dark fill.
         prefixIconColor: WidgetStateColor.resolveWith((s) =>
-            s.contains(WidgetState.focused) ? inputAccent : mutedSoft),
+            s.contains(WidgetState.focused) ? accent : muted),
         labelStyle: const TextStyle(color: muted, fontWeight: FontWeight.w600),
-        floatingLabelStyle: const TextStyle(color: inputAccent, fontWeight: FontWeight.w800),
+        floatingLabelStyle: const TextStyle(color: accent, fontWeight: FontWeight.w800),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(rMd), borderSide: const BorderSide(color: border)),
         enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(rMd), borderSide: const BorderSide(color: border, width: 1.2)),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(rMd), borderSide: const BorderSide(color: inputAccent, width: 2.2)),
-        errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(rMd), borderSide: const BorderSide(color: live, width: 1.4)),
-        focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(rMd), borderSide: const BorderSide(color: live, width: 2.2)),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(rMd), borderSide: const BorderSide(color: accent, width: 2.2)),
+        errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(rMd), borderSide: const BorderSide(color: red, width: 1.4)),
+        focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(rMd), borderSide: const BorderSide(color: red, width: 2.2)),
       ),
     );
   }
 
   static ThemeData dark() => light();
+}
+
+/// Mown-grass vertical stripes for the pitch background.
+class PitchStripes extends StatelessWidget {
+  final Widget child;
+  const PitchStripes({super.key, required this.child});
+  @override
+  Widget build(BuildContext context) => CustomPaint(painter: _StripePainter(), child: child);
+}
+
+class _StripePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    const stripeW = 46.0;
+    final p = Paint()..color = AppTheme.bgStripe;
+    canvas.drawRect(Offset.zero & size, Paint()..color = AppTheme.bg);
+    for (double x = 0; x < size.width; x += stripeW * 2) {
+      canvas.drawRect(Rect.fromLTWH(x, 0, stripeW, size.height), p);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
