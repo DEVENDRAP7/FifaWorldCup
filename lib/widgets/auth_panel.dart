@@ -223,16 +223,37 @@ class _AuthPanelState extends ConsumerState<AuthPanel> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
+          // Glyph only on the (shorter) login form; sign-up drops it to fit
+          // without scrolling.
+          if (!_isSignUp) ...[
+            Center(
+              child: Container(
+                width: 66,
+                height: 66,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: const LinearGradient(colors: [AppTheme.gold, AppTheme.goldSoft]),
+                  boxShadow: [
+                    BoxShadow(color: AppTheme.gold.withValues(alpha: 0.45), blurRadius: 22, spreadRadius: 1),
+                  ],
+                ),
+                child: const Icon(Icons.emoji_events_rounded, color: Color(0xFF1F1F22), size: 34),
+              ),
+            ),
+            const SizedBox(height: 18),
+          ],
           Text(
             _isSignUp ? 'Create account' : 'Welcome back',
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: Colors.white),
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: 0.2),
           ),
           const SizedBox(height: 6),
           Text(
             _isSignUp ? 'Sign up to vote and sync across devices.' : 'Sign in to vote on matches.',
-            style: const TextStyle(color: AppTheme.muted),
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: AppTheme.muted, fontSize: 14),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 24),
           if (_isSignUp) ...[
             TextFormField(
               controller: _name,
@@ -300,26 +321,30 @@ class _AuthPanelState extends ConsumerState<AuthPanel> {
                 ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
                 : Text(_isSignUp ? 'Create account' : 'Sign In', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
           ),
-          const SizedBox(height: 14),
-          Row(children: const [
-            Expanded(child: Divider(color: Color(0x33FFFFFF))),
-            Padding(padding: EdgeInsets.symmetric(horizontal: 10), child: Text('or', style: TextStyle(color: AppTheme.muted, fontSize: 12))),
-            Expanded(child: Divider(color: Color(0x33FFFFFF))),
-          ]),
-          const SizedBox(height: 14),
-          FilledButton.icon(
-            style: FilledButton.styleFrom(backgroundColor: Colors.white, foregroundColor: Colors.black87, padding: const EdgeInsets.symmetric(vertical: 14)),
-            onPressed: _busy ? null : _google,
-            icon: _googleLoading
-                ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2))
-                : const Icon(Icons.g_mobiledata, size: 26),
-            label: Text(_googleLoading ? 'Signing in…' : 'Continue with Google', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
-          ),
-          const SizedBox(height: 10),
-          OutlinedButton(
-            onPressed: _busy ? null : widget.onGuest,
-            child: const Text('Continue as Guest', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
-          ),
+          // Google + Guest are sign-in shortcuts only; hidden in sign-up so the
+          // form stays non-scrollable and Google isn't asked for name/confirm.
+          if (!_isSignUp) ...[
+            const SizedBox(height: 14),
+            Row(children: const [
+              Expanded(child: Divider(color: Color(0x33FFFFFF))),
+              Padding(padding: EdgeInsets.symmetric(horizontal: 10), child: Text('or', style: TextStyle(color: AppTheme.muted, fontSize: 12))),
+              Expanded(child: Divider(color: Color(0x33FFFFFF))),
+            ]),
+            const SizedBox(height: 14),
+            FilledButton.icon(
+              style: FilledButton.styleFrom(backgroundColor: Colors.white, foregroundColor: Colors.black87, padding: const EdgeInsets.symmetric(vertical: 14)),
+              onPressed: _busy ? null : _google,
+              icon: _googleLoading
+                  ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2))
+                  : const Icon(Icons.g_mobiledata, size: 26),
+              label: Text(_googleLoading ? 'Signing in…' : 'Continue with Google', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
+            ),
+            const SizedBox(height: 10),
+            OutlinedButton(
+              onPressed: _busy ? null : widget.onGuest,
+              child: const Text('Continue as Guest', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
+            ),
+          ],
           const SizedBox(height: 12),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text(_isSignUp ? 'Already have an account?' : "Don't have an account?", style: const TextStyle(color: AppTheme.muted, fontSize: 13)),

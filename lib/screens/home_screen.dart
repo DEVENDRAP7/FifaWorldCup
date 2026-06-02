@@ -31,7 +31,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(authProvider);
-    if (!user.onboarded) return const OnboardingScreen();
+    // Signed-out / fresh user → onboarding. A returning (already-onboarded)
+    // user lands straight on the login step, skipping the intro carousel.
+    if (user.mode == AuthMode.unknown) {
+      return OnboardingScreen(startAtLogin: user.onboarded);
+    }
 
     const pages = [
       MatchesScreen(),

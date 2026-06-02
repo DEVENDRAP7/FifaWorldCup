@@ -124,9 +124,10 @@ flutter_launcher_icons:
 
 flutter_native_splash:
   color: "#1B1330"
-  image: assets/icon.png
+  # Pre-padded logo (small logo centered on bg) so the legacy splash doesn't
+  # render the full-bleed 2048px icon fullscreen.
+  image: assets/splash_logo.png
   android_12:
     color: "#1B1330"
     image: assets/icon.png
   android: true
-  ios: true

@@ -109,8 +109,23 @@ class AuthNotifier extends Notifier<UserState> {
 
   Future<void> signOut() async {
     await AuthService.signOut();
-    await _b.clear();
-    state = UserState(mode: AuthMode.unknown, onboarded: false);
+    // Keep "already onboarded" + favorite team so the user lands on the login
+    // screen (not the intro carousel) and doesn't re-pick a team. Only the
+    // signed-in identity is cleared.
+    final fav = state.favoriteTeam;
+    final code = state.favoriteCountryCode;
+    final onb = state.onboarded;
+    await _b.putAll({'mode': AuthMode.unknown.name});
+    await _b.delete('name');
+    await _b.delete('email');
+    await _b.delete('photoUrl');
+    await _b.delete('uid');
+    state = UserState(
+      mode: AuthMode.unknown,
+      onboarded: onb,
+      favoriteTeam: fav,
+      favoriteCountryCode: code,
+    );
   }
 
   /// Returns null on success, or an error message to show.

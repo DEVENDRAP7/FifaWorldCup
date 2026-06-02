@@ -11,6 +11,7 @@ import '../services/auth_service.dart';
 import '../services/ad_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/flag.dart';
+import '../widgets/banner_ad_widget.dart';
 import '../l10n/gen/app_localizations.dart';
 import 'about_screen.dart';
 
@@ -111,6 +112,7 @@ class ProfileScreen extends ConsumerWidget {
       context: context,
       backgroundColor: const Color(0xFF1F1633),
       isScrollControlled: true,
+      useSafeArea: true,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(18))),
       builder: (_) => const _FavTeamSheet(),
     );
@@ -121,6 +123,7 @@ class ProfileScreen extends ConsumerWidget {
       context: context,
       backgroundColor: const Color(0xFF1F1633),
       isScrollControlled: true,
+      useSafeArea: true,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(18))),
       builder: (_) => const _MyVotesSheet(),
     );
@@ -131,6 +134,7 @@ class ProfileScreen extends ConsumerWidget {
       context: context,
       backgroundColor: const Color(0xFF1F1633),
       isScrollControlled: true,
+      useSafeArea: true,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(18))),
       builder: (_) => const _LanguageSheet(),
     );
@@ -337,6 +341,8 @@ class _FavTeamSheet extends ConsumerWidget {
                     }).toList(),
                   ),
           ),
+          const SizedBox(height: 8),
+          const BannerAdWidget(),
         ]),
       ),
     );

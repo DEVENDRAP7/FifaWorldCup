@@ -7,13 +7,16 @@ import '../widgets/flag.dart';
 import '../widgets/auth_panel.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
-  const OnboardingScreen({super.key});
+  /// When true (returning signed-out user), skip the intro carousel and open
+  /// directly on the login step.
+  final bool startAtLogin;
+  const OnboardingScreen({super.key, this.startAtLogin = false});
   @override
   ConsumerState<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
 class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
-  int _step = 0;
+  late int _step = widget.startAtLogin ? 1 : 0;
   String? _selectedName;
   String? _selectedCode;
   final _pageCtrl = PageController();
@@ -36,16 +39,15 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     if (_step == 0) {
       return Scaffold(body: _carousel());
     }
-    // Auth step scrolls (keyboard); team picker fills available space.
-    final body = _step == 1
-        ? SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-            child: _authStep(),
-          )
-        : const Padding(padding: EdgeInsets.all(20), child: SizedBox.shrink());
+    // Auth + team picker are both non-scrollable; keyboard overlays instead of
+    // resizing, so the form never gains a scrollbar.
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: _step == 1 ? body : Padding(padding: const EdgeInsets.all(20), child: _teamPicker()),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: _step == 1 ? _authStep() : _teamPicker(),
+        ),
       ),
     );
   }
@@ -162,19 +164,27 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   Widget _authStep() => Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: IconButton(
-              onPressed: () => setState(() => _step = 0),
-              icon: const Icon(Icons.arrow_back),
+          if (!widget.startAtLogin)
+            Align(
+              alignment: Alignment.centerLeft,
+              child: IconButton(
+                onPressed: () => setState(() => _step = 0),
+                icon: const Icon(Icons.arrow_back),
+              ),
             ),
-          ),
           const SizedBox(height: 4),
           AuthPanel(
-            onAuthenticated: () => setState(() => _step = 2),
+            // Returning (already-onboarded) user → HomeScreen swaps to the app
+            // once mode flips; don't send them back through the team picker.
+            onAuthenticated: () {
+              if (ref.read(authProvider).onboarded) return;
+              setState(() => _step = 2);
+            },
             onGuest: () async {
               await ref.read(authProvider.notifier).signInAsGuest();
-              if (mounted) setState(() => _step = 2);
+              if (!mounted) return;
+              if (ref.read(authProvider).onboarded) return;
+              setState(() => _step = 2);
             },
           ),
         ],

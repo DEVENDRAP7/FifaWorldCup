@@ -15,6 +15,7 @@ class AppTheme {
   static const mutedSoft = Color(0x4DFFFFFF);
 
   static const primary = Color(0xFFC8102E);          // Pitch Red
+  static const inputAccent = Color(0xFFFF3B4E);      // Bright red — focused field accent
   static const gold = Color(0xFFD4AF37);             // Trophy Gold
   static const goldSoft = Color(0xFFFFD700);         // Sunray Yellow
 
@@ -117,10 +118,17 @@ class AppTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true, fillColor: surface,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        // Bright red accent so the focus state reads clearly on the dark fill.
+        prefixIconColor: WidgetStateColor.resolveWith((s) =>
+            s.contains(WidgetState.focused) ? inputAccent : mutedSoft),
+        labelStyle: const TextStyle(color: muted, fontWeight: FontWeight.w600),
+        floatingLabelStyle: const TextStyle(color: inputAccent, fontWeight: FontWeight.w800),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(rMd), borderSide: const BorderSide(color: border)),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(rMd), borderSide: const BorderSide(color: border)),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(rMd), borderSide: const BorderSide(color: primary, width: 1.5)),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(rMd), borderSide: const BorderSide(color: border, width: 1.2)),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(rMd), borderSide: const BorderSide(color: inputAccent, width: 2.2)),
+        errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(rMd), borderSide: const BorderSide(color: live, width: 1.4)),
+        focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(rMd), borderSide: const BorderSide(color: live, width: 2.2)),
       ),
     );
   }

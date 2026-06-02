@@ -13,7 +13,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   late final Animation<double> _scale;  // subtle scale-in
   late final Animation<double> _shine;  // shine sweep across logo
 
-  static const double _logo = 150;
+  static const double _logo = 104;
 
   @override
   void initState() {
