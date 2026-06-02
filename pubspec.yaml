@@ -129,5 +129,10 @@ flutter_native_splash:
   image: assets/splash_logo.png
   android_12:
     color: "#1B1330"
-    image: assets/icon.png
+    # Padded logo — Android 12+ system splash sizes the icon by how much of the
+    # canvas it fills, so a small centered logo renders small (full-bleed = huge).
+    image: assets/splash_a12.png
+    # Icon plate color — without this the transparent padding shows the system's
+    # default WHITE plate behind the icon.
+    icon_background_color: "#1B1330"
   android: true
