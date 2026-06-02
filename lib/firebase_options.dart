@@ -25,8 +25,6 @@ class DefaultFirebaseOptions {
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
-      case TargetPlatform.iOS:
-        return ios;
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -51,19 +49,9 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDkAp4BRH8ZQ7R91rQfTyyPzbLeL8EMLsI',
-    appId: '1:674980117376:android:af766acb9ab56f4d9b1f65',
+    appId: '1:674980117376:android:6184354f3949bd979b1f65',
     messagingSenderId: '674980117376',
     projectId: 'fifaworldcup2026-23d01',
     storageBucket: 'fifaworldcup2026-23d01.firebasestorage.app',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyB2r6FgJbL2GzMjrsMlu44vHIuVpAPLR1U',
-    appId: '1:674980117376:ios:49f737b413f19bb89b1f65',
-    messagingSenderId: '674980117376',
-    projectId: 'fifaworldcup2026-23d01',
-    storageBucket: 'fifaworldcup2026-23d01.firebasestorage.app',
-    iosClientId: '674980117376-1uh73usqnf3rji1de02mo4m8ndaohg7f.apps.googleusercontent.com',
-    iosBundleId: 'com.example.flutterApp',
   );
 }
