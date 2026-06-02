@@ -2,6 +2,13 @@ import 'package:dio/dio.dart';
 import '../models/match.dart';
 import 'config_service.dart';
 
+/// DEBUG: load the REAL 2022 World Cup (finished matches with full lineups +
+/// stats + events) so match-detail can be tested against real data now.
+/// SET BACK TO false before release (uses the live 2026 feed).
+const bool kTestSeason2022 = false;
+const String _wc2022Url =
+    'https://api.fifa.com/api/v3/calendar/matches?idCompetition=17&idSeason=255711&language=en&count=200';
+
 class ApiService {
   final RemoteConfig config;
   final Dio _dio = Dio(BaseOptions(
@@ -12,12 +19,35 @@ class ApiService {
   ApiService(this.config);
 
   Future<List<WcMatch>> fetchMatches() async {
-    final r = await _dio.get(config.scoreboardUrl);
+    final r = await _dio.get(kTestSeason2022 ? _wc2022Url : config.scoreboardUrl);
     final list = ((r.data['Results'] as List?) ?? const [])
         .map((e) => WcMatch.fromJson(Map<String, dynamic>.from(e)))
         .toList();
     list.sort((a, b) => a.date.compareTo(b.date));
     return list;
+  }
+
+  /// Full match detail (lineups, possession, key events) from the FIFA live
+  /// endpoint. Returns null if ids are missing or the request fails.
+  Future<MatchDetail?> fetchMatchDetail(WcMatch m) async {
+    if (m.idCompetition.isEmpty || m.idSeason.isEmpty || m.idStage.isEmpty) {
+      return null;
+    }
+    try {
+      final base = 'https://api.fifa.com/api/v3';
+      final ids = '${m.idCompetition}/${m.idSeason}/${m.idStage}/${m.id}';
+      final r = await _dio.get('$base/live/football/$ids?language=en');
+      if (r.data is! Map) return null;
+      final detail = MatchDetail.fromJson(Map<String, dynamic>.from(r.data));
+      // Timeline → real per-team stats (shots, corners, fouls, offsides, cards).
+      try {
+        final t = await _dio.get('$base/timelines/$ids?language=en');
+        final ev = (t.data is Map ? t.data['Event'] : null);
+        if (ev is List) detail.computeStatsFromTimeline(ev);
+      } catch (_) {}
+      return detail;
+    } catch (_) {}
+    return null;
   }
 
   // FIFA standings endpoint requires per-group call. Workaround: derive standings

@@ -15,6 +15,11 @@ final apiProvider = Provider<ApiService>((ref) {
   return ApiService(cfg);
 });
 
+/// Lineups + stats + events for one match (lazy, cached per match).
+final matchDetailProvider = FutureProvider.family<MatchDetail?, WcMatch>((ref, m) async {
+  return ref.read(apiProvider).fetchMatchDetail(m);
+});
+
 class MatchesNotifier extends AsyncNotifier<List<WcMatch>> {
   Timer? _timer;
 
