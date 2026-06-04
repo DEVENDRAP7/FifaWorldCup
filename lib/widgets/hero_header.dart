@@ -38,15 +38,15 @@ class _HeroHeaderState extends State<HeroHeader> {
     final m = _left.inMinutes.remainder(60).abs();
     final s = _left.inSeconds.remainder(60).abs();
 
-    return Container(
+    return GradientBorder(
       margin: const EdgeInsets.fromLTRB(12, 14, 12, 10),
-      decoration: BoxDecoration(
-        color: AppTheme.deep,
-        borderRadius: BorderRadius.circular(AppTheme.rLg),
-        border: Border.all(color: AppTheme.accent, width: 2),
-        boxShadow: AppTheme.shadowMd,
-      ),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      radius: AppTheme.rLg,
+      width: 2,
+      gradient: AppTheme.fifaGradient,
+      boxShadow: AppTheme.shadowMd,
+      child: Container(
+        color: AppTheme.card,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         // Board header bar
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -100,6 +100,7 @@ class _HeroHeaderState extends State<HeroHeader> {
           ]),
         ),
       ]),
+      ),
     );
   }
 
@@ -107,7 +108,7 @@ class _HeroHeaderState extends State<HeroHeader> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
-            color: AppTheme.bg,
+            color: AppTheme.deep,
             borderRadius: BorderRadius.circular(AppTheme.rSm),
             border: Border.all(color: AppTheme.border),
           ),
@@ -122,7 +123,7 @@ class _HeroHeaderState extends State<HeroHeader> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
           decoration: BoxDecoration(
-            color: live ? AppTheme.red : AppTheme.bg,
+            color: live ? AppTheme.red : AppTheme.deep,
             borderRadius: BorderRadius.circular(AppTheme.rSm),
             border: Border.all(color: live ? AppTheme.red : AppTheme.border),
           ),

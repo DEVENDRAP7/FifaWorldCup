@@ -24,21 +24,21 @@ class MatchCard extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppTheme.rLg),
-        child: Container(
-          decoration: BoxDecoration(
+        child: GradientBorder(
+          radius: AppTheme.rLg,
+          width: isLive ? 2.2 : 1.6,
+          gradient: AppTheme.fifaGradient,
+          boxShadow: isLive
+              ? const [BoxShadow(color: Color(0x47FF4D5E), blurRadius: 22), ...AppTheme.shadowMd]
+              : AppTheme.shadowMd,
+          child: Container(
             color: AppTheme.card,
-            borderRadius: BorderRadius.circular(AppTheme.rLg),
-            border: Border.all(color: isLive ? AppTheme.red : AppTheme.border, width: isLive ? 1.6 : 1),
-            boxShadow: isLive
-                ? [BoxShadow(color: AppTheme.red.withValues(alpha: .3), blurRadius: 14)]
-                : AppTheme.shadowSm,
-          ),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             // Scoreboard header
             Container(
               padding: const EdgeInsets.fromLTRB(14, 7, 10, 7),
               decoration: BoxDecoration(
-                color: isLive ? AppTheme.red.withValues(alpha: .18) : AppTheme.deep,
+                color: isLive ? AppTheme.red.withValues(alpha: .20) : AppTheme.band,
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(AppTheme.rLg - 1)),
               ),
               child: Row(children: [
@@ -63,7 +63,7 @@ class MatchCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
                 decoration: const BoxDecoration(
-                  color: AppTheme.deep,
+                  color: AppTheme.band,
                   border: Border(top: BorderSide(color: AppTheme.border)),
                   borderRadius: BorderRadius.vertical(bottom: Radius.circular(AppTheme.rLg - 1)),
                 ),
@@ -75,6 +75,7 @@ class MatchCard extends StatelessWidget {
                 ]),
               ),
           ]),
+          ),
         ),
       ),
     );

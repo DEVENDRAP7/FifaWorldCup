@@ -2,6 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import '../theme/app_theme.dart';
 
+/// Shimmer palette — light grey.
+const _shimmerBase = Color(0xFFDDE1E7);     // light grey card fill
+const _shimmerHi = Color(0xFFF4F6F9);       // bright sweep
+const _shimmerBlock = Color(0xFFC6CCD4);    // slightly darker placeholder block
+
+/// Wraps any skeleton tree in the standard light-grey shimmer sweep.
+class ShimmerBox extends StatelessWidget {
+  final Widget child;
+  const ShimmerBox({super.key, required this.child});
+  @override
+  Widget build(BuildContext context) => Shimmer.fromColors(
+        baseColor: _shimmerBase,
+        highlightColor: _shimmerHi,
+        period: const Duration(milliseconds: 1300),
+        child: child,
+      );
+}
+
 class Skeleton extends StatelessWidget {
   final double? width;
   final double height;
@@ -10,36 +28,55 @@ class Skeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         width: width, height: height,
-        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(radius)),
+        decoration: BoxDecoration(color: _shimmerBlock, borderRadius: BorderRadius.circular(radius)),
       );
 }
 
 class MatchCardSkeleton extends StatelessWidget {
   const MatchCardSkeleton({super.key});
   @override
-  Widget build(BuildContext context) => Shimmer.fromColors(
-        baseColor: const Color(0xFFE5E7EB),
-        highlightColor: const Color(0xFFF9FAFB),
-        period: const Duration(milliseconds: 1400),
-        child: Container(
-          margin: const EdgeInsets.only(bottom: AppTheme.s12),
-          padding: const EdgeInsets.all(AppTheme.s16),
-          decoration: BoxDecoration(color: AppTheme.card, borderRadius: BorderRadius.circular(AppTheme.rLg)),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: const [
-            Row(children: [
-              Skeleton(width: 80, height: 10),
-              Spacer(),
-              Skeleton(width: 48, height: 18, radius: 6),
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.fromLTRB(AppTheme.s12, 0, AppTheme.s12, AppTheme.s12),
+        child: ShimmerBox(
+          child: Container(
+            decoration: BoxDecoration(
+              color: _shimmerBase,
+              borderRadius: BorderRadius.circular(AppTheme.rLg),
+            ),
+            child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: const [
+              // header band (stage + status)
+              Padding(
+                padding: EdgeInsets.fromLTRB(14, 11, 12, 11),
+                child: Row(children: [
+                  Skeleton(width: 90, height: 10),
+                  Spacer(),
+                  Skeleton(width: 46, height: 16, radius: 8),
+                ]),
+              ),
+              // teams + score
+              Padding(
+                padding: EdgeInsets.fromLTRB(14, 4, 14, 16),
+                child: Row(children: [
+                  Expanded(child: Column(children: [
+                    Skeleton(width: 34, height: 34, radius: 999),
+                    SizedBox(height: 8),
+                    Skeleton(width: 64, height: 11),
+                  ])),
+                  Skeleton(width: 52, height: 30, radius: 6),
+                  Expanded(child: Column(children: [
+                    Skeleton(width: 34, height: 34, radius: 999),
+                    SizedBox(height: 8),
+                    Skeleton(width: 64, height: 11),
+                  ])),
+                ]),
+              ),
+              // footer band (venue)
+              Padding(
+                padding: EdgeInsets.fromLTRB(14, 0, 14, 14),
+                child: Skeleton(width: double.infinity, height: 10),
+              ),
             ]),
-            SizedBox(height: AppTheme.s16),
-            Row(children: [
-              Expanded(child: Column(children: [Skeleton(width: 40, height: 28, radius: 4), SizedBox(height: 6), Skeleton(width: 70, height: 12)])),
-              Skeleton(width: 48, height: 24),
-              Expanded(child: Column(children: [Skeleton(width: 40, height: 28, radius: 4), SizedBox(height: 6), Skeleton(width: 70, height: 12)])),
-            ]),
-            SizedBox(height: AppTheme.s12),
-            Skeleton(width: double.infinity, height: 10),
-          ]),
+          ),
         ),
       );
 }
@@ -49,7 +86,7 @@ class SkeletonList extends StatelessWidget {
   const SkeletonList({super.key, this.count = 6});
   @override
   Widget build(BuildContext context) => ListView.builder(
-        padding: const EdgeInsets.all(AppTheme.s12),
+        padding: const EdgeInsets.only(top: AppTheme.s12),
         itemCount: count,
         itemBuilder: (_, _) => const MatchCardSkeleton(),
       );
@@ -58,25 +95,24 @@ class SkeletonList extends StatelessWidget {
 class GroupCardSkeleton extends StatelessWidget {
   const GroupCardSkeleton({super.key});
   @override
-  Widget build(BuildContext context) => Shimmer.fromColors(
-        baseColor: const Color(0xFFE5E7EB),
-        highlightColor: const Color(0xFFF9FAFB),
-        period: const Duration(milliseconds: 1400),
-        child: Container(
-          margin: const EdgeInsets.only(bottom: AppTheme.s12),
-          padding: const EdgeInsets.all(AppTheme.s16),
-          decoration: BoxDecoration(color: AppTheme.card, borderRadius: BorderRadius.circular(AppTheme.rLg)),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: const [
-            Skeleton(width: 80, height: 14),
-            SizedBox(height: AppTheme.s12),
-            Skeleton(width: double.infinity, height: 16),
-            SizedBox(height: AppTheme.s8),
-            Skeleton(width: double.infinity, height: 16),
-            SizedBox(height: AppTheme.s8),
-            Skeleton(width: double.infinity, height: 16),
-            SizedBox(height: AppTheme.s8),
-            Skeleton(width: double.infinity, height: 16),
-          ]),
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.fromLTRB(AppTheme.s12, 0, AppTheme.s12, AppTheme.s12),
+        child: ShimmerBox(
+          child: Container(
+            padding: const EdgeInsets.all(AppTheme.s16),
+            decoration: BoxDecoration(color: _shimmerBase, borderRadius: BorderRadius.circular(AppTheme.rLg)),
+            child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: const [
+              Skeleton(width: 90, height: 14),
+              SizedBox(height: AppTheme.s16),
+              Skeleton(width: double.infinity, height: 14),
+              SizedBox(height: AppTheme.s12),
+              Skeleton(width: double.infinity, height: 14),
+              SizedBox(height: AppTheme.s12),
+              Skeleton(width: double.infinity, height: 14),
+              SizedBox(height: AppTheme.s12),
+              Skeleton(width: double.infinity, height: 14),
+            ]),
+          ),
         ),
       );
 }
@@ -85,7 +121,7 @@ class GroupsListSkeleton extends StatelessWidget {
   const GroupsListSkeleton({super.key});
   @override
   Widget build(BuildContext context) => ListView.builder(
-        padding: const EdgeInsets.all(AppTheme.s12),
+        padding: const EdgeInsets.only(top: AppTheme.s12),
         itemCount: 6,
         itemBuilder: (_, _) => const GroupCardSkeleton(),
       );

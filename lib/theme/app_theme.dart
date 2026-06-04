@@ -2,60 +2,81 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 /// ════════════════════════════════════════════════════════════
-///  PITCH — football stadium look. Grass-green field, white pitch
-///  lines, stadium-board yellow, scoreboard type (Teko + Saira).
+///  PITCH · FIFA 26 — bright grass field, electric-lime accents,
+///  translucent glass cards edged with the FIFA-26 tri-colour
+///  (red · yellow · green · blue) sweep. Scoreboard type (Teko +
+///  Saira). Matches the match-ball icon's coloured panels.
 /// ════════════════════════════════════════════════════════════
 class AppTheme {
-  // Field surfaces
-  static const bg = Color(0xFF0B5E34);          // grass green
-  static const bgStripe = Color(0xFF0A5530);    // mown stripe (darker)
-  static const deep = Color(0xFF063C20);        // dark panel / header bars
-  static const card = Color(0xFF0C4A29);        // scoreboard panel
-  static const paper = Color(0xFF0E5331);       // lighter panel
-  static const surface = Color(0xFF0F5C36);     // chip fill
-  static const border = Color(0x40FFFFFF);      // pitch line (white @ 25%)
-  static const line = Color(0x59FFFFFF);        // brighter line
+  // Field surfaces — bright pitch grass
+  static const bgTop = Color(0xFF28B257);       // bright grass (top of gradient)
+  static const bg = Color(0xFF19984A);          // pitch base (scaffold)
+  static const bgBot = Color(0xFF0D7338);       // deeper grass (bottom)
+  static const bgStripe = Color(0x12FFFFFF);    // subtle mown stripe (white @ 7%)
+  static const deep = Color(0xFF0B1A12);         // dark bar — headers / nav / bands
+  static const card = Color(0x7A0A1811);         // translucent glass card (~48%)
+  static const band = Color(0x4D000000);         // translucent header/footer band
+  static const cardHi = Color(0xFF12281C);       // raised opaque panel
+  static const panel = Color(0xFF0E1F16);        // sheets / dialogs (opaque)
+  static const paper = Color(0xFF12281C);        // lighter panel
+  static const surface = Color(0x14FFFFFF);      // glass chip fill (white @ 8%)
+  static const border = Color(0x33FFFFFF);       // hairline (white @ 20%)
+  static const line = Color(0x52FFFFFF);         // brighter hairline
 
   // Text
   static const text = Color(0xFFFFFFFF);
-  static const textSecondary = Color(0xFFE6F4EC);
-  static const muted = Color(0xFFAFCDBC);
+  static const textSecondary = Color(0xFFEAF3EC);
+  static const muted = Color(0xFFA6C6B4);
   static const mutedSoft = Color(0x1FFFFFFF);
   static const ink = Color(0xFFFFFFFF);
 
-  // Accents — stadium board yellow
-  static const accent = Color(0xFFF4C430);
-  static const gold = Color(0xFFF4C430);
-  static const goldSoft = Color(0xFFFFDA63);
-  static const primary = Color(0xFFF4C430);
-  static const inputAccent = Color(0xFFF4C430);
+  // Accents — electric lime
+  static const accent = Color(0xFFC8FF3D);       // electric lime
+  static const gold = Color(0xFFC8FF3D);          // repurposed → lime
+  static const goldSoft = Color(0xFFE4FF9A);     // light lime highlight
+  static const goldDeep = Color(0xFF9FD42A);     // deep lime
+  static const primary = Color(0xFFC8FF3D);
+  static const inputAccent = Color(0xFFC8FF3D);
+  static const mint = Color(0xFF39D353);          // positive / win
 
-  static const live = Color(0xFFFF4136);        // live red
-  static const red = Color(0xFFFF4136);
-  static const win = Color(0xFF7DE48A);         // bright pitch green-white
+  static const live = Color(0xFFFF4D5E);          // live red
+  static const red = Color(0xFFFF4D5E);
+  static const win = Color(0xFF39D353);           // win green
 
-  static const usaBlue = Color(0xFFF4C430);
-  static const usaRed = Color(0xFFFF4136);
-  static const canadaRed = Color(0xFFFF4136);
-  static const mexicoGreen = Color(0xFF7DE48A);
-  static const mexicoRed = Color(0xFFFF4136);
+  // FIFA-26 tri-colour (ball panels): red · yellow · green · blue
+  static const fifaRed = Color(0xFFFF4D5E);
+  static const fifaYellow = Color(0xFFFFD93D);
+  static const fifaGreen = Color(0xFF39D353);
+  static const fifaBlue = Color(0xFF3D9BFF);
+
+  static const usaBlue = Color(0xFF3D9BFF);
+  static const usaRed = Color(0xFFFF4D5E);
+  static const canadaRed = Color(0xFFFF4D5E);
+  static const mexicoGreen = Color(0xFF39D353);
+  static const mexicoRed = Color(0xFFFF4D5E);
 
   // ─── Spacing ──────────────────────────────────────────────
   static const s2 = 2.0, s4 = 4.0, s8 = 8.0, s12 = 12.0, s16 = 16.0, s20 = 20.0, s24 = 24.0, s32 = 32.0, s48 = 48.0;
-  static const rSm = 6.0, rMd = 10.0, rLg = 14.0, rPill = 999.0;
+  static const rSm = 8.0, rMd = 12.0, rLg = 16.0, rPill = 999.0;
 
   static const shadowSm = [
-    BoxShadow(color: Color(0x33000000), blurRadius: 8, offset: Offset(0, 2)),
+    BoxShadow(color: Color(0x33000000), blurRadius: 12, offset: Offset(0, 4)),
   ];
   static const shadowMd = [
-    BoxShadow(color: Color(0x4D000000), blurRadius: 18, offset: Offset(0, 6)),
+    BoxShadow(color: Color(0x59000000), blurRadius: 28, offset: Offset(0, 12)),
   ];
 
-  static const triGradient = LinearGradient(colors: [accent, goldSoft]);
-  static const stageGradient = LinearGradient(colors: [accent, goldSoft]);
-  static const royalGradient = LinearGradient(
+  // FIFA-26 tri-colour sweep — card / panel borders
+  static const fifaGradient = LinearGradient(
     begin: Alignment.topLeft, end: Alignment.bottomRight,
-    colors: [deep, Color(0xFF0B5E34), deep],
+    colors: [fifaRed, fifaYellow, fifaGreen, fifaBlue],
+    stops: [0.0, 0.30, 0.62, 1.0],
+  );
+  static const triGradient = fifaGradient;
+  static const stageGradient = LinearGradient(colors: [goldSoft, accent]);
+  static const royalGradient = LinearGradient(
+    begin: Alignment.topCenter, end: Alignment.bottomCenter,
+    colors: [bgTop, bg, bgBot],
   );
 
   // ─── Typography ───────────────────────────────────────────
@@ -88,7 +109,7 @@ class AppTheme {
       cardColor: card,
       useMaterial3: true,
       colorScheme: const ColorScheme.dark(
-        primary: accent, secondary: win, surface: card, error: red, onSurface: text,
+        primary: accent, onPrimary: deep, secondary: mint, surface: panel, error: red, onSurface: text,
       ),
       dividerColor: border,
       splashFactory: InkSparkle.splashFactory,
@@ -104,7 +125,11 @@ class AppTheme {
         titleTextStyle: _head(20, FontWeight.w700, l: 0.6),
         iconTheme: const IconThemeData(color: text),
       ),
-      bottomSheetTheme: const BottomSheetThemeData(backgroundColor: card, surfaceTintColor: card),
+      dialogTheme: DialogThemeData(
+        backgroundColor: panel, surfaceTintColor: panel,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(rLg)),
+      ),
+      bottomSheetTheme: const BottomSheetThemeData(backgroundColor: panel, surfaceTintColor: panel),
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: deep,
         indicatorColor: accent.withValues(alpha: .25),
@@ -147,25 +172,86 @@ class AppTheme {
   static ThemeData dark() => light();
 }
 
-/// Mown-grass vertical stripes for the pitch background.
+/// Bright pitch backdrop — vivid grass gradient with alternating
+/// mown stripes, a warm gold light-bloom up top, and a gentle
+/// vignette for depth.
 class PitchStripes extends StatelessWidget {
   final Widget child;
   const PitchStripes({super.key, required this.child});
   @override
-  Widget build(BuildContext context) => CustomPaint(painter: _StripePainter(), child: child);
+  Widget build(BuildContext context) => CustomPaint(painter: _PitchPainter(), child: child);
 }
 
-class _StripePainter extends CustomPainter {
+class _PitchPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    const stripeW = 46.0;
-    final p = Paint()..color = AppTheme.bgStripe;
-    canvas.drawRect(Offset.zero & size, Paint()..color = AppTheme.bg);
-    for (double x = 0; x < size.width; x += stripeW * 2) {
-      canvas.drawRect(Rect.fromLTWH(x, 0, stripeW, size.height), p);
+    final rect = Offset.zero & size;
+
+    // Base vivid grass gradient (bright top → deeper bottom).
+    canvas.drawRect(rect, Paint()..shader = const LinearGradient(
+      begin: Alignment.topCenter, end: Alignment.bottomCenter,
+      colors: [AppTheme.bgTop, AppTheme.bg, AppTheme.bgBot],
+      stops: [0.0, 0.55, 1.0],
+    ).createShader(rect));
+
+    // Mown stripes — subtle alternating bands across the field.
+    final bandW = size.width / 6;
+    final stripe = Paint()..color = AppTheme.bgStripe;
+    for (double x = 0; x < size.width; x += bandW * 2) {
+      canvas.drawRect(Rect.fromLTWH(x, 0, bandW, size.height), stripe);
     }
+
+    // Lime light-bloom near the top — stadium floodlight wash.
+    final glowCenter = Offset(size.width * 0.5, size.height * 0.10);
+    canvas.drawRect(rect, Paint()..shader = RadialGradient(
+      center: const Alignment(0, -0.82), radius: 1.0,
+      colors: const [Color(0x24C8FF3D), Color(0x00000000)],
+      stops: const [0.0, 1.0],
+    ).createShader(Rect.fromCircle(center: glowCenter, radius: size.width * 0.95)));
+
+    // Gentle corner vignette for depth so the bright grass isn't flat.
+    canvas.drawRect(rect, Paint()..shader = RadialGradient(
+      center: Alignment.center, radius: 1.0,
+      colors: const [Color(0x00000000), Color(0x40000000)],
+      stops: const [0.55, 1.0],
+    ).createShader(rect));
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+/// Tri-colour gradient border around a translucent panel. The outer box
+/// is painted with [gradient]; [width] of it shows as the border, and the
+/// child is clipped to the inner radius. Used for FIFA-26 match cards / hero.
+class GradientBorder extends StatelessWidget {
+  final Widget child;
+  final double radius;
+  final double width;
+  final Gradient gradient;
+  final List<BoxShadow>? boxShadow;
+  final EdgeInsetsGeometry? margin;
+  const GradientBorder({
+    super.key,
+    required this.child,
+    this.radius = AppTheme.rLg,
+    this.width = 1.6,
+    this.gradient = AppTheme.fifaGradient,
+    this.boxShadow,
+    this.margin,
+  });
+  @override
+  Widget build(BuildContext context) => Container(
+        margin: margin,
+        padding: EdgeInsets.all(width),
+        decoration: BoxDecoration(
+          gradient: gradient,
+          borderRadius: BorderRadius.circular(radius),
+          boxShadow: boxShadow,
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(radius - width),
+          child: child,
+        ),
+      );
 }
