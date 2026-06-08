@@ -223,40 +223,46 @@ class _AuthPanelState extends ConsumerState<AuthPanel> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Glyph only on the (shorter) login form; sign-up drops it to fit
-          // without scrolling.
+          // Brand ball glyph — only on the (shorter) login form so sign-up
+          // stays non-scrollable.
           if (!_isSignUp) ...[
             Center(
               child: Container(
-                width: 66,
-                height: 66,
+                padding: const EdgeInsets.all(3),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  gradient: const LinearGradient(colors: [AppTheme.gold, AppTheme.goldSoft]),
+                  border: Border.all(color: AppTheme.accent, width: 2),
                   boxShadow: [
-                    BoxShadow(color: AppTheme.gold.withValues(alpha: 0.45), blurRadius: 22, spreadRadius: 1),
+                    BoxShadow(color: AppTheme.accent.withValues(alpha: 0.40), blurRadius: 22, spreadRadius: 1),
                   ],
                 ),
-                child: const Icon(Icons.emoji_events_rounded, color: Color(0xFF1F1F22), size: 34),
+                child: ClipOval(
+                  child: SizedBox(width: 72, height: 72, child: Image.asset('assets/icon.png', fit: BoxFit.cover)),
+                ),
               ),
             ),
             const SizedBox(height: 18),
           ],
           Text(
-            _isSignUp ? 'Create account' : 'Welcome back',
+            (_isSignUp ? 'Create Account' : 'Welcome Back').toUpperCase(),
             textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: 0.2),
+            style: AppTheme.headline.copyWith(fontSize: 28, letterSpacing: 1.2),
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 4),
+          Center(
+            child: Container(width: 40, height: 3, decoration: BoxDecoration(color: AppTheme.accent, borderRadius: BorderRadius.circular(2))),
+          ),
+          const SizedBox(height: 10),
           Text(
             _isSignUp ? 'Sign up to vote and sync across devices.' : 'Sign in to vote on matches.',
             textAlign: TextAlign.center,
-            style: const TextStyle(color: AppTheme.muted, fontSize: 14),
+            style: AppTheme.caption.copyWith(fontSize: 13),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 22),
           if (_isSignUp) ...[
             TextFormField(
               controller: _name,
+              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
               textInputAction: TextInputAction.next,
               textCapitalization: TextCapitalization.words,
               validator: validateName,
@@ -266,6 +272,7 @@ class _AuthPanelState extends ConsumerState<AuthPanel> {
           ],
           TextFormField(
             controller: _email,
+            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
             autofillHints: const [AutofillHints.email],
@@ -275,6 +282,7 @@ class _AuthPanelState extends ConsumerState<AuthPanel> {
           const SizedBox(height: 12),
           TextFormField(
             controller: _password,
+            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
             obscureText: _obscure,
             textInputAction: _isSignUp ? TextInputAction.next : TextInputAction.done,
             validator: validatePassword,
@@ -292,6 +300,7 @@ class _AuthPanelState extends ConsumerState<AuthPanel> {
             const SizedBox(height: 12),
             TextFormField(
               controller: _confirm,
+              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
               obscureText: _obscure,
               textInputAction: TextInputAction.done,
               validator: (v) => v != _password.text ? 'Passwords do not match' : null,
@@ -315,11 +324,11 @@ class _AuthPanelState extends ConsumerState<AuthPanel> {
             const SizedBox(height: 8),
           ],
           FilledButton(
-            style: FilledButton.styleFrom(backgroundColor: AppTheme.primary, padding: const EdgeInsets.symmetric(vertical: 14)),
+            style: FilledButton.styleFrom(backgroundColor: AppTheme.accent, foregroundColor: AppTheme.deep, padding: const EdgeInsets.symmetric(vertical: 15)),
             onPressed: _busy ? null : _submitEmail,
             child: _emailLoading
-                ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
-                : Text(_isSignUp ? 'Create account' : 'Sign In', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
+                ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.deep))
+                : Text((_isSignUp ? 'Create Account' : 'Sign In').toUpperCase(), style: AppTheme.title.copyWith(fontSize: 15, color: AppTheme.deep, letterSpacing: 1)),
           ),
           // Google + Guest are sign-in shortcuts only; hidden in sign-up so the
           // form stays non-scrollable and Google isn't asked for name/confirm.
@@ -350,12 +359,12 @@ class _AuthPanelState extends ConsumerState<AuthPanel> {
             Text(_isSignUp ? 'Already have an account?' : "Don't have an account?", style: const TextStyle(color: AppTheme.muted, fontSize: 13)),
             TextButton(
               onPressed: _busy ? null : _toggleMode,
-              child: Text(_isSignUp ? 'Sign In' : 'Sign Up', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 13)),
+              child: Text((_isSignUp ? 'Sign In' : 'Sign Up').toUpperCase(), style: const TextStyle(color: AppTheme.accent, fontWeight: FontWeight.w800, fontSize: 13, letterSpacing: 0.5)),
             ),
           ]),
           TextButton(
             onPressed: openPrivacyPolicy,
-            child: const Text('Privacy Policy', style: TextStyle(color: AppTheme.mutedSoft, fontSize: 12, fontWeight: FontWeight.w600)),
+            child: const Text('Privacy Policy', style: TextStyle(color: AppTheme.muted, fontSize: 12, fontWeight: FontWeight.w600)),
           ),
         ],
       ),

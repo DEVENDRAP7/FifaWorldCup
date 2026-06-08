@@ -3,6 +3,10 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'ad_ids.dart';
 import 'consent_manager.dart';
 
+/// Master ads switch — set false to kill ALL ads (banner, interstitial,
+/// app-open). Off for store screenshots. Set true before release.
+const bool kAdsEnabled = true;
+
 class AdService {
   AdService._();
   static final AdService instance = AdService._();
@@ -46,7 +50,7 @@ class AdService {
     }
   }
 
-  bool get _canServe => _ready && !_isPremium && ConsentManager.instance.canShowAds;
+  bool get _canServe => kAdsEnabled && _ready && !_isPremium && ConsentManager.instance.canShowAds;
 
   // ── Banner (adaptive anchored) ───────────────────────────────
   Future<BannerAd?> createBannerAd(double width, {VoidCallback? onLoaded}) async {

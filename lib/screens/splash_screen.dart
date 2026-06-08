@@ -58,10 +58,10 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
               scale: _scale,
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(34),
+                  shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFFD4AF37).withValues(alpha: 0.40),
+                      color: AppTheme.accent.withValues(alpha: 0.40),
                       blurRadius: 36,
                       spreadRadius: 2,
                     ),
@@ -70,8 +70,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                 child: SizedBox(
                   width: _logo,
                   height: _logo,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(34),
+                  child: ClipOval(
                     child: Stack(
                       clipBehavior: Clip.hardEdge,
                       children: [
