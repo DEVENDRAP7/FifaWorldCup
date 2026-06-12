@@ -267,6 +267,68 @@ Color _posColor(int pos) => switch (pos) {
       _ => Colors.white,
     };
 
+// A token placed in pitch space: x 1..20 (10 = centre), y 1 (GK) .. higher = forward.
+typedef _Placed = ({LineupPlayer p, double x, double y});
+
+// Use the real LineupX/LineupY when the feed provides them; otherwise rebuild the
+// shape from the formation string + each player's position. The 2026 live feed
+// returns null X/Y (parsed as 0), which previously collapsed every token into one
+// corner — this fallback lays the XI out in proper rows instead.
+List<_Placed> _placeStarters(List<LineupPlayer> starters, String tactics) {
+  final hasRealCoords = starters.any((p) => p.x != 0 || p.y != 0);
+  if (hasRealCoords) {
+    return [for (final p in starters) (p: p, x: p.x, y: p.y)];
+  }
+
+  final gk = starters.where((p) => p.position == 0).toList();
+  final outfield = [...starters.where((p) => p.position != 0)]
+    ..sort((a, b) {
+      final c = a.position.compareTo(b.position); // GK→DEF→MID→FWD
+      return c != 0 ? c : a.shirt.compareTo(b.shirt);
+    });
+
+  // Rows from defence → attack. Prefer the exact formation when it fits the XI.
+  List<List<LineupPlayer>> rows;
+  final lines = _parseFormation(tactics);
+  if (lines != null && lines.fold(0, (a, b) => a + b) == outfield.length) {
+    rows = [];
+    var i = 0;
+    for (final n in lines) {
+      rows.add(outfield.sublist(i, i + n));
+      i += n;
+    }
+  } else {
+    // Fallback: bucket by position (DEF / MID / FWD+unknown).
+    rows = [
+      outfield.where((p) => p.position == 1).toList(),
+      outfield.where((p) => p.position == 2).toList(),
+      outfield.where((p) => p.position == 3 || p.position == 4).toList(),
+    ]..removeWhere((r) => r.isEmpty);
+    if (rows.isEmpty) rows = [outfield];
+  }
+
+  final placed = <_Placed>[for (final g in gk) (p: g, x: 10.0, y: 1.0)];
+  for (var li = 0; li < rows.length; li++) {
+    final row = rows[li];
+    final y = (li + 2).toDouble(); // GK = 1, first outfield line = 2
+    for (var i = 0; i < row.length; i++) {
+      placed.add((p: row[i], x: ((i + 0.5) / row.length) * 20.0, y: y));
+    }
+  }
+  return placed;
+}
+
+// "4-1-2-3" → [4,1,2,3]; "442" → [4,4,2]; null if it can't be read as a formation.
+List<int>? _parseFormation(String tactics) {
+  final groups = RegExp(r'\d+').allMatches(tactics).map((m) => int.parse(m[0]!)).toList();
+  if (groups.isEmpty) return null;
+  if (groups.length == 1) {
+    final digits = tactics.replaceAll(RegExp(r'\D'), '').split('').map(int.parse).toList();
+    return (digits.length >= 2 && digits.fold(0, (a, b) => a + b) == 10) ? digits : null;
+  }
+  return groups;
+}
+
 class _PitchTeam extends StatelessWidget {
   final String name;
   final String flag;
@@ -278,7 +340,8 @@ class _PitchTeam extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final starters = team.starters;
-    final ys = starters.map((p) => p.y).toList();
+    final placed = _placeStarters(starters, team.tactics);
+    final ys = placed.map((e) => e.y).toList();
     final minY = ys.isEmpty ? 1.0 : ys.reduce((a, b) => a < b ? a : b);
     final maxY = ys.isEmpty ? 12.0 : ys.reduce((a, b) => a > b ? a : b);
     final spanY = (maxY - minY).abs() < 0.001 ? 1.0 : (maxY - minY);
@@ -322,12 +385,12 @@ class _PitchTeam extends StatelessWidget {
             child: LayoutBuilder(builder: (ctx, c) {
               final w = c.maxWidth, h = c.maxHeight;
               const tok = 40.0;
-              return Stack(children: starters.map((p) {
-                final xN = (p.x / 20.0).clamp(0.0, 1.0);
-                final yN = ((p.y - minY) / spanY).clamp(0.0, 1.0);
+              return Stack(children: placed.map((e) {
+                final xN = (e.x / 20.0).clamp(0.0, 1.0);
+                final yN = ((e.y - minY) / spanY).clamp(0.0, 1.0);
                 final left = (0.09 + xN * 0.82) * w - 32;
                 final top = (0.90 - yN * 0.80) * h - tok / 2; // GK bottom, FWD top
-                return Positioned(left: left, top: top, child: _token(p, tok));
+                return Positioned(left: left, top: top, child: _token(e.p, tok));
               }).toList());
             }),
           ),

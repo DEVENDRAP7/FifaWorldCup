@@ -208,15 +208,19 @@ class MatchDetail {
         case 2: isH ? yh++ : ya++; break;
       }
     }
+    stats.clear();
+    // Possession only when the feed actually supplies it. The 2026 live feed
+    // returns BallPossession=null (→ 0/0), which must NOT render a 0%–0% bar.
+    if (possHome > 0 || possAway > 0) {
+      stats.add(StatRow('Possession', possHome.round(), possAway.round(), percent: true));
+    }
     stats
-      ..clear()
-      ..add(StatRow('Possession', possHome.round(), possAway.round(), percent: true))
       ..add(StatRow('Shots', sh, sa))
       ..add(StatRow('Corners', ch, ca))
       ..add(StatRow('Fouls', fh, fa))
       ..add(StatRow('Offsides', oh, oa))
       ..add(StatRow('Yellow cards', yh, ya));
-    // Drop all-zero rows except possession (always show possession).
+    // Drop all-zero counted rows (the percent possession row is never dropped here).
     stats.removeWhere((s) => !s.percent && s.home == 0 && s.away == 0);
   }
 
